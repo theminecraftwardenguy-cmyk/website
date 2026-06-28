@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import SiteShell from '@/components/SiteShell'
 
 export default function Home() {
@@ -122,16 +123,70 @@ export default function Home() {
           color: var(--text-muted);
           line-height: 1.7;
         }
+
+        /* ── Cat Manager ── */
+        .cat-manager-card {
+          margin-top: 2.5rem;
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: var(--radius-xl);
+          padding: 1.5rem 2rem;
+          display: flex;
+          align-items: center;
+          gap: 1.75rem;
+          max-width: 520px;
+        }
+        @media (max-width: 520px) {
+          .cat-manager-card {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+          }
+        }
+        .cat-manager-photo {
+          flex-shrink: 0;
+          width: 96px;
+          height: 96px;
+          border-radius: 50%;
+          overflow: hidden;
+          border: 2px solid var(--border);
+          box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+          position: relative;
+        }
+        .cat-manager-text {}
+        .cat-manager-badge {
+          display: inline-block;
+          font-size: 0.68rem;
+          font-weight: 700;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: var(--accent);
+          background: var(--accent-faint);
+          border-radius: 99px;
+          padding: 0.2rem 0.6rem;
+          margin-bottom: 0.4rem;
+        }
+        .cat-manager-name {
+          font-size: 1.05rem;
+          font-weight: 800;
+          color: var(--text);
+          margin-bottom: 0.3rem;
+        }
+        .cat-manager-desc {
+          font-size: 0.88rem;
+          color: var(--text-muted);
+          line-height: 1.6;
+        }
       `}</style>
 
       <section className="hero">
         <div className="hero-eyebrow">Sheung Wan · Dried Goods &amp; Preserved Meats · Since 1973</div>
         <h1 className="hero-title">
-          A family shop keeping the flavours of Hong Kong’s waterfront streets alive.
+          A family shop keeping the flavours of Hong Kong&apos;s waterfront streets alive.
         </h1>
         <p className="hero-lead">
           Yue Woh Hop Kee is a long-standing dried seafood and provisions shop in Sheung Wan —
-          a neighbourhood that once defined Hong Kong’s trading-port identity. The shop’s unchanged
+          a neighbourhood that once defined Hong Kong&apos;s trading-port identity. The shop&apos;s unchanged
           storefront, handmade lap mei, and deep roots in Cantonese cooking make it one of the last
           quiet anchors of a merchant heritage that has nearly disappeared from the street.
         </p>
@@ -145,6 +200,27 @@ export default function Home() {
           <div className="stat"><strong>Sheung Wan</strong><span>Historic waterfront district</span></div>
           <div className="stat"><strong>Tsuen Wan</strong><span>Own production workshop</span></div>
         </div>
+
+        {/* Cat Manager card */}
+        <div className="cat-manager-card">
+          <div className="cat-manager-photo">
+            <Image
+              src="/cat-manager.jpg"
+              alt="The shop cat, our esteemed Cat Manager"
+              fill
+              style={{ objectFit: 'cover', objectPosition: 'center top' }}
+              sizes="96px"
+            />
+          </div>
+          <div className="cat-manager-text">
+            <span className="cat-manager-badge">Meet the team</span>
+            <div className="cat-manager-name">Cat Manager</div>
+            <p className="cat-manager-desc">
+              Oversees daily operations, quality control, and nap scheduling.
+              Has been with us since the beginning — or at least acts like it.
+            </p>
+          </div>
+        </div>
       </section>
 
       <hr className="divider" />
@@ -153,7 +229,7 @@ export default function Home() {
         <div className="section-label">The neighbourhood</div>
         <h2 className="section-title">A shop that carries the memory of an entire district.</h2>
         <p className="section-body">
-          Sheung Wan grew as Hong Kong’s commercial and trading heart — its streets lined with shops
+          Sheung Wan grew as Hong Kong&apos;s commercial and trading heart — its streets lined with shops
           dealing in dried seafood, preserved goods, herbs, and provisions that supplied both
           households and the port. Most of those shops are gone. Yue Woh Hop Kee remains, its
           shelves and storefront unchanged, still operating on the same commercial rhythms that
@@ -168,10 +244,10 @@ export default function Home() {
         <div className="district-banner" data-reveal>
           <div>
             <div className="district-banner-label">Cultural anchor</div>
-            <div className="district-banner-title">Preserving the habits and flavours of Hong Kong’s merchant streets</div>
+            <div className="district-banner-title">Preserving the habits and flavours of Hong Kong&apos;s merchant streets</div>
           </div>
           <p className="district-banner-body">
-            As Sheung Wan’s old trading character has given way to redevelopment, cafés, and
+            As Sheung Wan&apos;s old trading character has given way to redevelopment, cafés, and
             galleries, Yue Woh Hop Kee has continued supplying the Cantonese cooking staples —
             lap cheong, waxed duck, liver sausage — that connect households to a food culture
             decades in the making. The shop is not a museum. It simply refuses to stop.
