@@ -2,7 +2,7 @@
 
 A production-ready Next.js starter with MongoDB Atlas authentication, deployed on Vercel.
 
-## ✨ Features
+##  Features
 
 - **Next.js 14** App Router + TypeScript
 - **MongoDB Atlas** — persistent auth with Mongoose (register, login, delete account)
@@ -11,11 +11,11 @@ A production-ready Next.js starter with MongoDB Atlas authentication, deployed o
 - **Mobile-first** — responsive sidebar with hamburger menu
 - **Vercel-ready** — deploy with one click
 
-## 🚀 Deploy to Vercel
+##  Deploy to Vercel
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/theminecraftwardenguy-cmyk/website)
 
-## 🛠️ Local Setup
+##  Local Setup
 
 ```bash
 npm install
@@ -26,7 +26,7 @@ npm run dev
 
 Then visit [localhost:3000](http://localhost:3000).
 
-## 🌱 MongoDB Atlas Setup
+##  MongoDB Atlas Setup
 
 1. **Create a free cluster** at [cloud.mongodb.com](https://cloud.mongodb.com)
 2. Go to **Database Access** → Add a new database user (username + password)
@@ -35,7 +35,7 @@ Then visit [localhost:3000](http://localhost:3000).
 5. Replace `<password>` with your DB user's password
 6. Add `MONGODB_URI` to your `.env.local` locally and to **Vercel → Settings → Environment Variables** for production
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 app/
@@ -57,6 +57,3 @@ lib/
   models/User.ts        — Mongoose User model
 ```
 
-## ⚠️ Session note
-
-User sessions are stored in `localStorage` on the client. This is a simple demo pattern — for production consider adding [NextAuth.js](https://next-auth.js.org) or [Clerk](https://clerk.com) for proper JWT session management.
