@@ -1,23 +1,18 @@
-import mongoose, { Schema, Document, Model } from 'mongoose'
+import mongoose, { Schema, Document, Model } from 'mongoose';
 
 export interface IUser extends Document {
-  name: string
-  email: string
-  hash: string
-  createdAt: Date
+  username: string;
+  email: string;
+  passwordHash: string;
+  createdAt: Date;
 }
 
-const UserSchema = new Schema<IUser>(
-  {
-    name: { type: String, required: true, trim: true },
-    email: { type: String, required: true, unique: true, lowercase: true, trim: true },
-    hash: { type: String, required: true },
-  },
-  { timestamps: { createdAt: true, updatedAt: false } }
-)
+const UserSchema = new Schema<IUser>({
+  username: { type: String, required: true, unique: true, trim: true, minlength: 3, maxlength: 30 },
+  email:    { type: String, required: true, unique: true, lowercase: true, trim: true },
+  passwordHash: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now },
+});
 
-// Prevent model re-compilation in Next.js hot-reload
-const UserModel: Model<IUser> =
-  (mongoose.models.User as Model<IUser>) || mongoose.model<IUser>('User', UserSchema)
-
-export default UserModel
+const User: Model<IUser> = mongoose.models.User || mongoose.model<IUser>('User', UserSchema);
+export default User;

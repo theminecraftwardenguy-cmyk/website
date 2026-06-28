@@ -1,22 +1,32 @@
-import { NextResponse } from 'next/server'
-import { connectDB } from '@/lib/mongodb'
-import User from '@/lib/models/User'
+import { NextRequest, NextResponse } from 'next/server';
+import bcrypt from 'bcryptjs';
+import dbConnect from '@/lib/mongodb';
+import User from '@/lib/models/User';
+import Post from '@/lib/models/Post';
+import { getSession } from '@/lib/auth';
 
-export async function POST(req: Request) {
+export async function DELETE(req: NextRequest) {
   try {
-    const { email } = await req.json()
-    if (!email)
-      return NextResponse.json({ error: 'Email is required' }, { status: 400 })
+    const session = await getSession();
+    if (!session) return NextResponse.json({ error: 'Not logged in' }, { status: 401 });
 
-    await connectDB()
+    const { password } = await req.json();
+    if (!password) return NextResponse.json({ error: 'Password required to delete account' }, { status: 400 });
 
-    const result = await User.deleteOne({ email: email.trim().toLowerCase() })
-    if (result.deletedCount === 0)
-      return NextResponse.json({ error: 'Account not found' }, { status: 404 })
+    await dbConnect;
+    const user = await User.findById(session.userId);
+    if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
 
-    return NextResponse.json({ message: 'Account deleted' })
-  } catch (err) {
-    console.error('[delete]', err)
-    return NextResponse.json({ error: 'Server error — please try again' }, { status: 500 })
+    const ok = await bcrypt.compare(password, user.passwordHash);
+    if (!ok) return NextResponse.json({ error: 'Wrong password' }, { status: 401 });
+
+    await Post.deleteMany({ authorId: user._id });
+    await User.findByIdAndDelete(user._id);
+
+    const res = NextResponse.json({ ok: true });
+    res.cookies.set('auth_token', '', { maxAge: 0, path: '/' });
+    return res;
+  } catch (e: any) {
+    return NextResponse.json({ error: e.message }, { status: 500 });
   }
 }

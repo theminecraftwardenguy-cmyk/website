@@ -1,33 +1,30 @@
-import { NextResponse } from 'next/server'
-import bcrypt from 'bcryptjs'
-import { connectDB } from '@/lib/mongodb'
-import User from '@/lib/models/User'
+import { NextRequest, NextResponse } from 'next/server';
+import bcrypt from 'bcryptjs';
+import dbConnect from '@/lib/mongodb';
+import User from '@/lib/models/User';
+import { signToken } from '@/lib/auth';
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
-    const { name, email, password } = await req.json()
+    const { username, email, password } = await req.json();
+    if (!username || !email || !password)
+      return NextResponse.json({ error: 'All fields required' }, { status: 400 });
+    if (password.length < 6)
+      return NextResponse.json({ error: 'Password must be at least 6 characters' }, { status: 400 });
 
-    if (!name?.trim() || !email?.trim() || !password)
-      return NextResponse.json({ error: 'All fields are required' }, { status: 400 })
+    await dbConnect;
+    const exists = await User.findOne({ $or: [{ email }, { username }] });
+    if (exists)
+      return NextResponse.json({ error: 'Username or email already taken' }, { status: 409 });
 
-    if (password.length < 8)
-      return NextResponse.json({ error: 'Password must be at least 8 characters' }, { status: 400 })
+    const passwordHash = await bcrypt.hash(password, 12);
+    const user = await User.create({ username, email, passwordHash });
+    const token = await signToken({ userId: user._id.toString(), username: user.username });
 
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-      return NextResponse.json({ error: 'Invalid email address' }, { status: 400 })
-
-    await connectDB()
-
-    const existing = await User.findOne({ email: email.trim().toLowerCase() })
-    if (existing)
-      return NextResponse.json({ error: 'An account with this email already exists' }, { status: 409 })
-
-    const hash = await bcrypt.hash(password, 12)
-    await User.create({ name: name.trim(), email: email.trim().toLowerCase(), hash })
-
-    return NextResponse.json({ message: 'Account created successfully' }, { status: 201 })
-  } catch (err) {
-    console.error('[register]', err)
-    return NextResponse.json({ error: 'Server error — please try again' }, { status: 500 })
+    const res = NextResponse.json({ ok: true, username: user.username });
+    res.cookies.set('auth_token', token, { httpOnly: true, secure: true, sameSite: 'lax', maxAge: 60 * 60 * 24 * 7, path: '/' });
+    return res;
+  } catch (e: any) {
+    return NextResponse.json({ error: e.message }, { status: 500 });
   }
 }

@@ -1,69 +1,66 @@
-'use client'
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import PageShell from '@/components/PageShell'
+'use client';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
-export default function DeleteAccount() {
-  const [user, setUser] = useState<{ name: string; email: string } | null>(null)
-  const [confirm, setConfirm] = useState('')
-  const [loading, setLoading] = useState(false)
-  const router = useRouter()
-
-  useEffect(() => {
-    const u = localStorage.getItem('wh_user')
-    if (!u) router.push('/login')
-    else setUser(JSON.parse(u))
-  }, [router])
+export default function DeleteAccountPage() {
+  const router = useRouter();
+  const [password, setPassword] = useState('');
+  const [confirm, setConfirm] = useState(false);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   async function handleDelete(e: React.FormEvent) {
-    e.preventDefault()
-    if (confirm !== 'DELETE') return
-    setLoading(true)
-    await fetch('/api/auth/delete', {
-      method: 'POST',
+    e.preventDefault();
+    if (!confirm) return;
+    setError('');
+    setLoading(true);
+    const r = await fetch('/api/auth/delete', {
+      method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: user?.email }),
-    })
-    localStorage.removeItem('wh_user')
-    router.push('/')
+      body: JSON.stringify({ password }),
+    });
+    const d = await r.json();
+    setLoading(false);
+    if (!r.ok) { setError(d.error); return; }
+    router.push('/');
+    router.refresh();
   }
 
-  if (!user) return null
-
   return (
-    <PageShell>
-      <style>{`
-        .delete-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(239,68,68,0.2); border-radius: 1.25rem; padding: 2.5rem; width: 100%; max-width: 420px; }
-        .delete-icon { font-size: 2.5rem; margin-bottom: 1rem; }
-        .delete-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; color: #f87171; }
-        .delete-copy { color: #94a3b8; font-size: 0.9rem; line-height: 1.7; margin-bottom: 1.5rem; }
-        .warning-box { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); border-radius: 0.625rem; padding: 0.9rem 1rem; font-size: 0.85rem; color: #fca5a5; margin-bottom: 1.5rem; }
-        .form-group { margin-bottom: 1rem; }
-        label { display: block; margin-bottom: 0.4rem; font-size: 0.875rem; color: #cbd5e1; font-weight: 500; }
-        input[type=text] { width: 100%; padding: 0.7rem 0.9rem; border: 1px solid rgba(239,68,68,0.3); border-radius: 0.5rem; background: rgba(239,68,68,0.05); color: #f8fafc; font-size: 0.95rem; }
-        input:focus { outline: none; border-color: #ef4444; }
-        .btn-delete { display: block; width: 100%; padding: 0.85rem; border-radius: 9999px; font-weight: 600; font-size: 0.95rem; background: #ef4444; color: #fff; border: none; cursor: pointer; margin-top: 0.5rem; transition: all 0.18s; }
-        .btn-delete:hover:not(:disabled) { background: #dc2626; transform: translateY(-1px); }
-        .btn-delete:disabled { opacity: 0.4; cursor: not-allowed; }
-        .cancel-link { display: block; text-align: center; margin-top: 1rem; font-size: 0.875rem; color: #64748b; cursor: pointer; }
-        .cancel-link:hover { color: #94a3b8; }
-      `}</style>
-      <div className="delete-card">
-        <div className="delete-icon">⚠️</div>
-        <h1 className="delete-title">Delete Account</h1>
-        <p className="delete-copy">This action is permanent and cannot be undone. All your data will be removed.</p>
-        <div className="warning-box">You are about to delete the account for <strong>{user.email}</strong>.</div>
-        <form onSubmit={handleDelete}>
-          <div className="form-group">
-            <label htmlFor="confirm">Type <strong style={{color:'#f87171'}}>DELETE</strong> to confirm</label>
-            <input id="confirm" type="text" placeholder="DELETE" value={confirm} onChange={e => setConfirm(e.target.value)} />
-          </div>
-          <button type="submit" className="btn-delete" disabled={confirm !== 'DELETE' || loading}>
-            {loading ? 'Deleting…' : 'Permanently Delete Account'}
+    <main style={pageStyle}>
+      <div style={cardStyle}>
+        <h1 style={titleStyle}>Delete Account</h1>
+        <p style={{ color: '#7a5c3e', textAlign: 'center', marginBottom: '1.5rem', lineHeight: 1.6 }}>
+          This will permanently delete your account and all your posts. This cannot be undone.
+        </p>
+        <form onSubmit={handleDelete} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <label style={labelStyle}>
+            Confirm your password
+            <input type="password" value={password} onChange={e => setPassword(e.target.value)} required
+              style={inputStyle} placeholder="••••••••" />
+          </label>
+          <label style={{ display: 'flex', gap: '0.6rem', alignItems: 'center', cursor: 'pointer', fontSize: '0.875rem', color: '#3d1a00' }}>
+            <input type="checkbox" checked={confirm} onChange={e => setConfirm(e.target.checked)} />
+            I understand this action is irreversible
+          </label>
+          {error && <p style={{ color: '#c0392b', fontSize: '0.875rem', margin: 0 }}>{error}</p>}
+          <button type="submit" disabled={loading || !confirm || !password}
+            style={{ ...submitBtn, opacity: loading || !confirm || !password ? 0.5 : 1 }}>
+            {loading ? 'Deleting...' : 'Delete My Account'}
           </button>
         </form>
-        <span className="cancel-link" onClick={() => router.back()}>← Cancel</span>
+        <p style={{ textAlign: 'center', marginTop: '1.25rem', fontSize: '0.875rem' }}>
+          <Link href="/blog" style={{ color: '#9b3a0e' }}>← Back to blog</Link>
+        </p>
       </div>
-    </PageShell>
-  )
+    </main>
+  );
 }
+
+const pageStyle: React.CSSProperties = { minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem 1rem', background: '#fdf6ee' };
+const cardStyle: React.CSSProperties = { background: '#fff', border: '1px solid #e8c0c0', borderRadius: 14, padding: '2.5rem', width: '100%', maxWidth: 420, boxShadow: '0 4px 24px rgba(100,0,0,0.08)' };
+const titleStyle: React.CSSProperties = { fontFamily: 'Noto Serif HK, serif', color: '#6b1a1a', textAlign: 'center', marginBottom: '0.25rem', fontSize: '1.75rem' };
+const labelStyle: React.CSSProperties = { display: 'flex', flexDirection: 'column', gap: '0.3rem', fontWeight: 600, color: '#3d1a00', fontSize: '0.9rem' };
+const inputStyle: React.CSSProperties = { padding: '0.65rem 0.9rem', border: '1px solid #d4b896', borderRadius: 8, fontSize: '1rem', fontFamily: 'inherit', outline: 'none' };
+const submitBtn: React.CSSProperties = { padding: '0.75rem', background: '#6b1a1a', color: '#fff', border: 'none', borderRadius: 8, fontSize: '1rem', fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', marginTop: '0.25rem' };

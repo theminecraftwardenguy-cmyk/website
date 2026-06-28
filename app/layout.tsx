@@ -1,20 +1,22 @@
-import type { Metadata } from 'next'
-import './globals.css'
+import type { Metadata } from 'next';
+import './globals.css';
+import Navbar from '@/components/Navbar';
 
 export const metadata: Metadata = {
-  title: 'Yue Woh Hop Kee — 裕和合記臘味',
-  description: 'Established in 1973 in Sai Ying Pun, Yue Woh Hop Kee is a Hong Kong family shop known for traditional handmade preserved meats.',
-}
+  title: 'Yue Woh Hop Kee — Since 1973',
+  description: 'Authentic Hong Kong lap cheong from Sai Ying Pun, handcrafted since 1973.',
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+HK:wght@400;600;700;800&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+HK:wght@400;700&display=swap" rel="stylesheet" />
       </head>
-      <body>{children}</body>
+      <body style={{ margin: 0, fontFamily: 'Georgia, serif', background: '#fdf6ee', minHeight: '100vh' }}>
+        <Navbar />
+        {children}
+      </body>
     </html>
-  )
+  );
 }
