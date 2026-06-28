@@ -91,24 +91,6 @@ export default function Home() {
         }
         .stat strong { display: block; font-size: 1.75rem; font-weight: 800; color: var(--text); }
         .stat span { font-size: 0.85rem; color: var(--text-muted); }
-        .feature-list { list-style: none; padding: 0; margin-top: 1rem; display: flex; flex-direction: column; gap: 0.6rem; }
-        .feature-list li {
-          padding-left: 1.25rem;
-          position: relative;
-          font-size: 0.93rem;
-          color: var(--text-muted);
-          line-height: 1.6;
-        }
-        .feature-list li::before {
-          content: '';
-          position: absolute;
-          left: 0;
-          top: 0.55em;
-          width: 6px;
-          height: 6px;
-          background: var(--accent);
-          border-radius: 50%;
-        }
         .district-banner {
           background: var(--surface);
           border: 1px solid var(--border);
@@ -251,24 +233,6 @@ export default function Home() {
             </p>
           </div>
         </div>
-      </section>
-
-      <hr className="divider" />
-
-      <section>
-        <div className="section-label">What this website covers</div>
-        <h2 className="section-title">Introduction, history, and contact — with the e-store coming soon.</h2>
-        <p className="section-body">
-          This website covers the three core sections required by the project brief: an introduction
-          to the store, its history and family story, and a contact page for enquiries and visits.
-          The E-Store link is reserved as a placeholder for future MShop integration.
-        </p>
-        <ul className="feature-list" style={{ marginTop: '1.5rem' }}>
-          <li><strong>Introduction</strong> — who Yue Woh Hop Kee is, what makes it special, and why it matters to Hong Kong food culture.</li>
-          <li><strong>Our Story</strong> — the full family history, the craft process, and how the shop has adapted over five decades.</li>
-          <li><strong>Contact</strong> — address, opening details, and enquiry information for visitors.</li>
-          <li><strong>E-Store (reserved)</strong> — the MShop team will build the full product catalogue and shopping experience at this link.</li>
-        </ul>
       </section>
     </SiteShell>
   )
