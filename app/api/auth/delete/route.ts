@@ -1,17 +1,22 @@
 import { NextResponse } from 'next/server'
-import { deleteUser, findUser } from '@/lib/users'
+import { connectDB } from '@/lib/mongodb'
+import User from '@/lib/models/User'
 
 export async function POST(req: Request) {
   try {
     const { email } = await req.json()
-    if (!email) return NextResponse.json({ error: 'Email is required' }, { status: 400 })
+    if (!email)
+      return NextResponse.json({ error: 'Email is required' }, { status: 400 })
 
-    const user = findUser(email)
-    if (!user) return NextResponse.json({ error: 'Account not found' }, { status: 404 })
+    await connectDB()
 
-    deleteUser(email)
+    const result = await User.deleteOne({ email: email.trim().toLowerCase() })
+    if (result.deletedCount === 0)
+      return NextResponse.json({ error: 'Account not found' }, { status: 404 })
+
     return NextResponse.json({ message: 'Account deleted' })
-  } catch {
+  } catch (err) {
+    console.error('[delete]', err)
     return NextResponse.json({ error: 'Server error — please try again' }, { status: 500 })
   }
 }

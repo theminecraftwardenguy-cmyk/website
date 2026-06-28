@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
-import { findUser } from '@/lib/users'
+import { connectDB } from '@/lib/mongodb'
+import User from '@/lib/models/User'
 
 export async function POST(req: Request) {
   try {
@@ -9,7 +10,9 @@ export async function POST(req: Request) {
     if (!email || !password)
       return NextResponse.json({ error: 'Email and password are required' }, { status: 400 })
 
-    const user = findUser(email)
+    await connectDB()
+
+    const user = await User.findOne({ email: email.trim().toLowerCase() })
     if (!user)
       return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 })
 
@@ -18,9 +21,14 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 })
 
     return NextResponse.json({
-      user: { name: user.name, email: user.email, createdAt: user.createdAt },
+      user: {
+        name: user.name,
+        email: user.email,
+        createdAt: user.createdAt,
+      },
     })
-  } catch {
+  } catch (err) {
+    console.error('[login]', err)
     return NextResponse.json({ error: 'Server error — please try again' }, { status: 500 })
   }
 }

@@ -1,11 +1,12 @@
 # Website Hero
 
-A production-ready Next.js starter with authentication, deployed on Vercel.
+A production-ready Next.js starter with MongoDB Atlas authentication, deployed on Vercel.
 
 ## ✨ Features
 
 - **Next.js 14** App Router + TypeScript
-- **Auth system** — register, login, profile, delete account (bcrypt-hashed passwords)
+- **MongoDB Atlas** — persistent auth with Mongoose (register, login, delete account)
+- **bcrypt** — passwords are hashed server-side, never stored in plain text
 - **Dark UI** — custom design system with CSS variables
 - **Mobile-first** — responsive sidebar with hamburger menu
 - **Vercel-ready** — deploy with one click
@@ -14,45 +15,48 @@ A production-ready Next.js starter with authentication, deployed on Vercel.
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/theminecraftwardenguy-cmyk/website)
 
-Or manually:
+## 🛠️ Local Setup
 
 ```bash
 npm install
+cp .env.local.example .env.local
+# Fill in MONGODB_URI in .env.local
 npm run dev
 ```
 
 Then visit [localhost:3000](http://localhost:3000).
 
-## 🗃️ Persistent Auth
+## 🌱 MongoDB Atlas Setup
 
-By default, user accounts are stored in-memory and reset on server restarts. This is intentional for a demo.
-
-For production, swap `lib/users.ts` with a real database:
-- **[Vercel Postgres](https://vercel.com/docs/storage/vercel-postgres)** — zero-config SQL
-- **[Neon](https://neon.tech)** — free serverless PostgreSQL  
-- **[PlanetScale](https://planetscale.com)** — free serverless MySQL
+1. **Create a free cluster** at [cloud.mongodb.com](https://cloud.mongodb.com)
+2. Go to **Database Access** → Add a new database user (username + password)
+3. Go to **Network Access** → Add IP `0.0.0.0/0` (allows Vercel's IPs)
+4. Click **Connect** → **Drivers** → copy the connection string
+5. Replace `<password>` with your DB user's password
+6. Add `MONGODB_URI` to your `.env.local` locally and to **Vercel → Settings → Environment Variables** for production
 
 ## 📁 Project Structure
 
 ```
 app/
-  page.tsx           — Home (hero)
-  layout.tsx         — Root layout
-  globals.css        — Design tokens + base styles
-  login/page.tsx     — Login form
-  register/page.tsx  — Registration form
-  profile/page.tsx   — User profile
-  delete-account/    — Delete account
-  get-started/       — Getting started guide
-  learn-more/        — Features overview
-  api/auth/          — Auth API routes
+  page.tsx              — Home (hero)
+  layout.tsx            — Root layout
+  globals.css           — Design tokens + base styles
+  login/page.tsx        — Login form
+  register/page.tsx     — Registration form
+  profile/page.tsx      — User profile
+  delete-account/       — Delete account
+  get-started/          — Getting started guide
+  learn-more/           — Features overview
+  api/auth/             — Auth API routes (register, login, logout, delete)
 components/
-  Sidebar.tsx        — Navigation sidebar
-  PageShell.tsx      — Page layout wrapper
+  Sidebar.tsx           — Navigation sidebar
+  PageShell.tsx         — Page layout wrapper
 lib/
-  users.ts           — User store (swap for DB)
+  mongodb.ts            — Mongoose connection helper (cached for serverless)
+  models/User.ts        — Mongoose User model
 ```
 
-## ⚠️ What was removed
+## ⚠️ Session note
 
-The original repo had PHP files (`index.php`, `login.php`, etc.), a SQLite database (`users.db`), and a Python script at the root — none of which work on Vercel. These have been replaced by the Next.js API routes in `app/api/`.
+User sessions are stored in `localStorage` on the client. This is a simple demo pattern — for production consider adding [NextAuth.js](https://next-auth.js.org) or [Clerk](https://clerk.com) for proper JWT session management.
