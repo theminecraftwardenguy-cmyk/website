@@ -21,14 +21,14 @@ export default function Home() {
           font-weight: 800;
           line-height: 1.1;
           color: var(--text);
-          max-width: 22ch;
+          max-width: 24ch;
           margin-bottom: 1.25rem;
         }
         .hero-lead {
           font-size: clamp(1rem, 1.5vw, 1.15rem);
           color: var(--text-muted);
-          max-width: 52ch;
-          line-height: 1.7;
+          max-width: 54ch;
+          line-height: 1.75;
           margin-bottom: 2rem;
         }
         .hero-actions {
@@ -55,8 +55,8 @@ export default function Home() {
         .section-body {
           font-size: 1rem;
           color: var(--text-muted);
-          line-height: 1.75;
-          max-width: 62ch;
+          line-height: 1.8;
+          max-width: 64ch;
         }
         .two-col {
           display: grid;
@@ -109,16 +109,49 @@ export default function Home() {
           background: var(--accent);
           border-radius: 50%;
         }
+        .district-banner {
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: var(--radius-xl);
+          padding: 1.75rem 2rem;
+          margin-top: 2.5rem;
+          display: grid;
+          grid-template-columns: 1fr 2fr;
+          gap: 1.5rem;
+          align-items: start;
+        }
+        @media (max-width: 700px) { .district-banner { grid-template-columns: 1fr; } }
+        .district-banner-label {
+          font-size: 0.72rem;
+          font-weight: 700;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: var(--accent);
+          margin-bottom: 0.4rem;
+        }
+        .district-banner-title {
+          font-size: 1.1rem;
+          font-weight: 800;
+          color: var(--text);
+          line-height: 1.3;
+        }
+        .district-banner-body {
+          font-size: 0.92rem;
+          color: var(--text-muted);
+          line-height: 1.7;
+        }
       `}</style>
 
       <section className="hero">
-        <div className="hero-eyebrow">Hong Kong Preserved Meats · Since 1973</div>
+        <div className="hero-eyebrow">Sheung Wan · Dried Goods &amp; Preserved Meats · Since 1973</div>
         <h1 className="hero-title">
-          Over fifty years of handmade lap mei in the heart of Sai Ying Pun.
+          A family shop keeping the flavours of Hong Kong's waterfront streets alive.
         </h1>
         <p className="hero-lead">
-          Yue Woh Hop Kee is a family-run preserved-meat shop on Des Voeux Road West, known for its ceiling-high rows of hanging sausages,
-          skilled seasonal craft, and a presence that has outlasted almost every neighbour on the old dried seafood street.
+          Yue Woh Hop Kee is a long-standing dried seafood and provisions shop in Sheung Wan —
+          a neighbourhood that once defined Hong Kong's trading-port identity. The shop's unchanged
+          storefront, handmade lap mei, and deep roots in Cantonese cooking make it one of the last
+          quiet anchors of a merchant heritage that has nearly disappeared from the street.
         </p>
         <div className="hero-actions">
           <Link href="/story" className="btn btn-primary">Read the story</Link>
@@ -128,7 +161,41 @@ export default function Home() {
         <div className="stat-row">
           <div className="stat"><strong>1973</strong><span>Year founded</span></div>
           <div className="stat"><strong>50+</strong><span>Years in operation</span></div>
+          <div className="stat"><strong>Sheung Wan</strong><span>Historic waterfront district</span></div>
           <div className="stat"><strong>Tsuen Wan</strong><span>Own production workshop</span></div>
+        </div>
+      </section>
+
+      <hr className="divider" />
+
+      <section>
+        <div className="section-label">The neighbourhood</div>
+        <h2 className="section-title">A shop that carries the memory of an entire district.</h2>
+        <p className="section-body">
+          Sheung Wan grew as Hong Kong's commercial and trading heart — its streets lined with shops
+          dealing in dried seafood, preserved goods, herbs, and provisions that supplied both
+          households and the port. Most of those shops are gone. Yue Woh Hop Kee remains, its
+          shelves and storefront unchanged, still operating on the same commercial rhythms that
+          defined the neighbourhood a century ago.
+        </p>
+        <p className="section-body" style={{ marginTop: '0.9rem' }}>
+          To walk into the shop is to encounter a sensory record of what this part of the city
+          once smelled, felt, and traded in — rose wine, cured pork, dried seasoning, the weight
+          of a real ingredient culture. These are not preserved as nostalgia. They are kept alive
+          because the food they produce still matters.
+        </p>
+
+        <div className="district-banner">
+          <div>
+            <div className="district-banner-label">Cultural anchor</div>
+            <div className="district-banner-title">Preserving the habits and flavours of Hong Kong's merchant streets</div>
+          </div>
+          <p className="district-banner-body">
+            As Sheung Wan's old trading character has given way to redevelopment, cafés, and
+            galleries, Yue Woh Hop Kee has continued supplying the Cantonese cooking staples —
+            lap cheong, waxed duck, liver sausage — that connect households to a food culture
+            decades in the making. The shop is not a museum. It simply refuses to stop.
+          </p>
         </div>
       </section>
 
@@ -138,43 +205,49 @@ export default function Home() {
         <div className="section-label">About the store</div>
         <h2 className="section-title">A shop that leaves an impression before you even buy anything.</h2>
         <p className="section-body">
-          Walk through the door and the first thing you notice is the height of the space — and the sausages filling every inch of it.
-          Rows of lap cheong, liver links, and cured meats hang from racks near the ceiling, red and glistening, forming what regulars describe
-          as a wall of preserved meat. The air carries rose wine, marinated pork, and dried seasoning, a scent that sets Yue Woh Hop Kee apart
-          from the moment you arrive.
+          Walk through the door and the first thing you notice is the height of the space — and
+          the sausages filling every inch of it. Rows of lap cheong, liver links, and cured meats
+          hang from racks near the ceiling, red and glistening, forming what regulars describe as
+          a wall of preserved meat. The air carries rose wine, marinated pork, and dried seasoning,
+          a scent that sets Yue Woh Hop Kee apart from the moment you arrive.
         </p>
         <div className="highlight-block">
-          &ldquo;The first time customers walk in, they are almost always stopped by the sight. Row after row of sausages, almost reaching the ceiling,
-          gleaming and densely packed — it&rsquo;s unlike anything else on the street.&rdquo;
+          &ldquo;The first time customers walk in, they are almost always stopped by the sight.
+          Row after row of sausages, almost reaching the ceiling, gleaming and densely packed —
+          it&rsquo;s unlike anything else on the street.&rdquo;
         </div>
 
         <div className="two-col">
           <div className="info-card">
             <h3>Sausages sorted by lean-to-fat ratio</h3>
             <p>
-              The shop marks its lap cheong with coloured ties so customers can choose the richness they want:
-              70%, 80%, 90% lean, right through to entirely lean pork. It is a simple system that shows how seriously the shop takes product consistency.
+              The shop marks its lap cheong with coloured ties so customers can choose the richness
+              they want: 70%, 80%, 90% lean, right through to entirely lean pork. A simple system
+              that shows how seriously the shop takes product consistency.
             </p>
           </div>
           <div className="info-card">
             <h3>Duck and goose liver sausages</h3>
             <p>
-              The shop offers both duck and goose liver versions. Goose liver is richer, more delicate, and particularly prized for claypot rice.
-              Combined with rose wine, the result has a layered aroma that regular customers come back for specifically.
+              The shop offers both duck and goose liver versions. Goose liver is richer and
+              particularly prized for claypot rice. Combined with rose wine, the result has a
+              layered aroma that regular customers return for specifically.
             </p>
           </div>
           <div className="info-card">
             <h3>Hand production every season</h3>
             <p>
-              Production begins around the eighth lunar month in the shop&rsquo;s own workshop in Tsuen Wan. Workers arrive at five in the morning to
-              cut, mix, season, stuff, pierce, tie, wash, and oven-dry by hand. The sausages take three to four days to finish.
+              Production begins around the eighth lunar month in the Tsuen Wan workshop. Workers
+              arrive at five in the morning to cut, mix, season, stuff, pierce, tie, wash, and
+              oven-dry by hand. The sausages take three to four days to finish.
             </p>
           </div>
           <div className="info-card">
             <h3>New ideas alongside tradition</h3>
             <p>
-              Under the next generation, the shop has introduced low-sugar sausages, shared recipes and knowledge online, and even collaborated
-              with a dessert shop to create preserved-meat ice cream flavours — lap cheong with peanut butter, goose liver with dark chocolate.
+              The next generation has introduced low-sugar sausages, shared recipes online, and
+              collaborated with a dessert shop on preserved-meat ice cream — lap cheong with
+              peanut butter, goose liver with dark chocolate.
             </p>
           </div>
         </div>
@@ -186,9 +259,9 @@ export default function Home() {
         <div className="section-label">What this website covers</div>
         <h2 className="section-title">Introduction, history, and contact — with the e-store coming soon.</h2>
         <p className="section-body">
-          This website covers the three core sections required by the project brief: an introduction to the store,
-          its history and family story, and a contact page for enquiries and visits.
-          The E-Store link in the navigation is reserved as a placeholder for future MShop integration.
+          This website covers the three core sections required by the project brief: an introduction
+          to the store, its history and family story, and a contact page for enquiries and visits.
+          The E-Store link is reserved as a placeholder for future MShop integration.
         </p>
         <ul className="feature-list" style={{ marginTop: '1.5rem' }}>
           <li><strong>Introduction</strong> — who Yue Woh Hop Kee is, what makes it special, and why it matters to Hong Kong food culture.</li>
