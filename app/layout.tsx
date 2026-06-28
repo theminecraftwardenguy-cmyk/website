@@ -1,22 +1,27 @@
-import type { Metadata } from 'next';
-import './globals.css';
-import Navbar from '@/components/Navbar';
+import type { Metadata } from 'next'
+import './globals.css'
+import ScrollReveal from '@/components/ScrollReveal'
 
 export const metadata: Metadata = {
-  title: 'Yue Woh Hop Kee — Since 1973',
-  description: 'Authentic Hong Kong lap cheong from Sai Ying Pun, handcrafted since 1973.',
-};
+  title: 'Yue Woh Hop Kee 裕和合記',
+  description: 'A long-standing dried seafood and provisions shop in Sheung Wan, preserving the flavours and merchant heritage of Hong Kong.',
+}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="zh-HK">
       <head>
-        <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+HK:wght@400;700&display=swap" rel="stylesheet" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Noto+Serif+HK:wght@400;500;700;900&display=swap"
+          rel="stylesheet"
+        />
       </head>
-      <body style={{ margin: 0, fontFamily: 'Georgia, serif', background: '#fdf6ee', minHeight: '100vh' }}>
-        <Navbar />
+      <body>
+        <ScrollReveal />
         {children}
       </body>
     </html>
-  );
+  )
 }

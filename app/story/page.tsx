@@ -12,6 +12,7 @@ export default function StoryPage() {
           text-transform: uppercase;
           color: var(--accent);
           margin-bottom: 0.75rem;
+          animation: heroSlide 0.6s 0.05s cubic-bezier(0.16,1,0.3,1) both;
         }
         .page-title {
           font-size: clamp(1.75rem, 4vw, 2.75rem);
@@ -20,12 +21,18 @@ export default function StoryPage() {
           color: var(--text);
           max-width: 28ch;
           margin-bottom: 1rem;
+          animation: heroSlide 0.7s 0.15s cubic-bezier(0.16,1,0.3,1) both;
         }
         .page-intro {
           font-size: 1rem;
           color: var(--text-muted);
           line-height: 1.8;
           max-width: 62ch;
+          animation: heroSlide 0.7s 0.28s cubic-bezier(0.16,1,0.3,1) both;
+        }
+        @keyframes heroSlide {
+          from { opacity: 0; transform: translateY(14px); }
+          to   { opacity: 1; transform: translateY(0); }
         }
         .divider { border: none; border-top: 1px solid var(--border); margin: clamp(2rem, 5vw, 3.5rem) 0; }
         .story-section { margin-bottom: clamp(2.5rem, 6vw, 4rem); }
@@ -111,10 +118,10 @@ export default function StoryPage() {
 
       <div className="page-header">
         <div className="page-kicker">History &amp; Heritage</div>
-        <h1 className="page-title">Fifty years of craft, family, and the merchant soul of Sheung Wan.</h1>
+        <h1 className="page-title">Fifty years of craft, family, and the merchant soul of Sheung Wan.</h1>
         <p className="page-intro">
           The story of Yue Woh Hop Kee begins in 1973, when a Dongguan-born craftsperson brought
-          traditional preserved-meat skills to Hong Kong's Sheung Wan — then a thriving trading-port
+          traditional preserved-meat skills to Hong Kong’s Sheung Wan — then a thriving trading-port
           neighbourhood defined by dried goods, provisions, and the daily commerce of a working
           waterfront. What followed is a family history built through constant work, seasonal
           discipline, and a refusal to let the craft disappear.
@@ -123,15 +130,14 @@ export default function StoryPage() {
 
       <hr className="divider" />
 
-      <div className="story-section">
+      <div className="story-section" data-reveal>
         <h2>Sheung Wan: a district shaped by trade</h2>
         <p>
-          Before it became known for galleries and cafés, Sheung Wan was Hong Kong's commercial
+          Before it became known for galleries and cafés, Sheung Wan was Hong Kong’s commercial
           engine — its streets dense with shops supplying dried seafood, cured meats, medicinal
           herbs, and everyday provisions to a city built on trade. Des Voeux Road West, where
           Yue Woh Hop Kee stands, was the heart of that world: a stretch of storefront after
-          storefront dealing in the ingredients that defined Cantonese cooking and kept the
-          neighbourhood's port-era rhythms alive.
+          storefront dealing in the ingredients that defined Cantonese cooking.
         </p>
         <p>
           Most of those shops have since closed. The street that once smelled of dried abalone,
@@ -139,18 +145,18 @@ export default function StoryPage() {
           Hop Kee remains — its shelves unchanged, its craft unaltered — a quiet record of
           what the district once was.
         </p>
-        <div className="heritage-block">
+        <div className="heritage-block" data-reveal>
           <div className="heritage-block-label">Cultural anchor</div>
           <p>
-            Yue Woh Hop Kee's role extends beyond selling food. By continuing to supply the
-            Cantonese cooking staples that once defined Sheung Wan's merchant culture — lap cheong,
+            Yue Woh Hop Kee’s role extends beyond selling food. By continuing to supply the
+            Cantonese cooking staples that once defined Sheung Wan’s merchant culture — lap cheong,
             waxed duck, liver sausage — the shop keeps alive the habits, flavours, and commercial
-            character of Hong Kong's historic waterfront streets.
+            character of Hong Kong’s historic waterfront streets.
           </p>
         </div>
       </div>
 
-      <div className="story-section">
+      <div className="story-section" data-reveal>
         <h2>Founded by Fang Yam Fan in 1973</h2>
         <p>
           Fang Yam Fan, originally from Dongguan in Guangdong province, arrived with
@@ -159,13 +165,13 @@ export default function StoryPage() {
           seafood — an environment where her craft could take root and find customers.
         </p>
         <p>
-          The shop's name, Yue Woh Hop Kee (裕和合記), reflects the Cantonese tradition of
+          The shop’s name, Yue Woh Hop Kee (裕和合記), reflects the Cantonese tradition of
           embedding continuity and character into a business identity. In the decades that
           followed, it became a recognised name among residents and cooks throughout the area.
         </p>
       </div>
 
-      <div className="story-section">
+      <div className="story-section" data-reveal>
         <h2>The craft: no shortcut that works</h2>
         <p>
           Preserved-meat making at Yue Woh Hop Kee follows a seasonal rhythm. Production begins
@@ -174,7 +180,7 @@ export default function StoryPage() {
           the retail space.
         </p>
         <p>Each year, workers at the workshop begin before dawn. The full process involves:</p>
-        <ul className="craft-steps">
+        <ul className="craft-steps" data-reveal-stagger>
           <li>Cutting and grinding the meat</li>
           <li>Mixing in seasoning and rose wine</li>
           <li>Stuffing the casings by hand</li>
@@ -189,18 +195,18 @@ export default function StoryPage() {
           causing the sausage to spoil. These differences cannot be measured by a machine —
           they are felt through experience built over a decade of practice.
         </p>
-        <div className="pull-quote">
+        <div className="pull-quote" data-reveal>
           &ldquo;This kind of feel, you can&rsquo;t learn it in a year or two. It takes ten years,
           maybe more. The cold, the early mornings, the short season — this is what the trade demands.&rdquo;
         </div>
       </div>
 
-      <div className="story-section">
+      <div className="story-section" data-reveal>
         <h2>The family behind the counter</h2>
         <p>
-          The shop's stewardship passed to Fu Chau Wing, who spent decades working inside the
+          The shop’s stewardship passed to Fu Chau Wing, who spent decades working inside the
           preserved-meat trade. Accounts of his work describe a life with almost no days off —
-          opening the shop even on the morning of his son's wedding. The business was not just
+          opening the shop even on the morning of his son’s wedding. The business was not just
           a livelihood; it was the structure around which family life was organised.
         </p>
         <p>
@@ -211,7 +217,7 @@ export default function StoryPage() {
         </p>
       </div>
 
-      <div className="story-section">
+      <div className="story-section" data-reveal>
         <h2>Staying relevant in a changed city</h2>
         <p>
           Today, Yue Woh Hop Kee faces conditions that would have been unrecognisable to its
@@ -221,13 +227,10 @@ export default function StoryPage() {
         </p>
         <p>
           Rather than simply holding on, the younger generation has pushed toward new ideas.
-          The shop introduced low-sugar sausage varieties to reach health-conscious customers.
-          It has shared ingredient knowledge and recipes online to reconnect younger generations
-          with traditional Hong Kong pantry culture. And it collaborated with a popular dessert
-          shop on preserved-meat ice cream — lap cheong with peanut butter, goose liver sausage
-          with dark chocolate and a hint of rose wine.
+          The shop introduced low-sugar sausage varieties, shared ingredient knowledge online,
+          and collaborated with a dessert shop on preserved-meat ice cream.
         </p>
-        <div className="two-col">
+        <div className="two-col" data-reveal-stagger>
           <div className="mini-card">
             <h3>The ice cream collaboration</h3>
             <p>
@@ -247,7 +250,7 @@ export default function StoryPage() {
             </p>
           </div>
         </div>
-        <p style={{ marginTop: '1.5rem' }}>
+        <p style={{ marginTop: '1.5rem' }} data-reveal>
           As the owner once said: &ldquo;If there comes a day when Hong Kong no longer has
           locally made sausages, that would be a real loss.&rdquo; That sense of
           responsibility — quiet, undemonstrative, consistent — runs through everything
