@@ -3,35 +3,16 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-const navBase: { href: string; label: string; auth?: 'guest' | 'user' }[] = [
+const navLinks = [
   { href: '/', label: 'Home' },
-  { href: '/get-started', label: 'Get Started' },
-  { href: '/learn-more', label: 'Learn More' },
-  { href: '/login', label: 'Log in', auth: 'guest' },
-  { href: '/register', label: 'Register', auth: 'guest' },
-  { href: '/profile', label: 'Profile', auth: 'user' },
-  { href: '/delete-account', label: 'Delete Account', auth: 'user' },
+  { href: '/story', label: 'Our Story' },
+  { href: '/contact', label: 'Contact' },
+  { href: '/shopping', label: 'E-Store' },
 ]
 
 export default function Sidebar() {
   const pathname = usePathname()
-  const [user, setUser] = useState<{ name: string; email: string } | null>(null)
   const [open, setOpen] = useState(false)
-
-  useEffect(() => {
-    const u = localStorage.getItem('wh_user')
-    if (u) setUser(JSON.parse(u))
-  }, [pathname])
-
-  const handleLogout = () => {
-    localStorage.removeItem('wh_user')
-    setUser(null)
-    window.location.href = '/'
-  }
-
-  const links = navBase.filter(l =>
-    !l.auth || (l.auth === 'guest' && !user) || (l.auth === 'user' && user)
-  )
 
   return (
     <>
@@ -65,13 +46,19 @@ export default function Sidebar() {
           background: var(--accent);
           color: #fff;
           font-weight: 700;
-          font-size: 1.15rem;
+          font-size: 1.05rem;
           flex-shrink: 0;
         }
         .brand-title {
-          font-size: 1.1rem;
+          font-size: 1rem;
           font-weight: 700;
           color: var(--text);
+          line-height: 1.25;
+        }
+        .brand-sub {
+          font-size: 0.72rem;
+          color: var(--text-muted);
+          font-weight: 400;
         }
         .nav { display: flex; flex-direction: column; gap: 0.5rem; flex: 1; }
         .nav-link {
@@ -81,34 +68,24 @@ export default function Sidebar() {
           color: var(--text-muted);
           transition: background var(--transition), color var(--transition);
           font-size: 0.95rem;
+          text-decoration: none;
         }
         .nav-link:hover, .nav-link.active {
           background: var(--accent-faint);
           color: var(--text);
         }
-        .nav-link.danger { color: #f87171; }
-        .nav-link.danger:hover { background: rgba(239,68,68,0.12); color: #fca5a5; }
-        .logout-btn {
-          display: block;
-          width: 100%;
-          text-align: left;
-          padding: 0.75rem 1rem;
-          border-radius: var(--radius-xl);
-          color: var(--text-muted);
-          transition: background var(--transition), color var(--transition);
-          font-size: 0.95rem;
+        .nav-link.store-link {
           margin-top: auto;
+          border: 1px dashed var(--border);
+          color: var(--text-faint);
+          font-size: 0.88rem;
         }
-        .logout-btn:hover { background: rgba(239,68,68,0.12); color: #fca5a5; }
-        .user-badge {
-          margin-top: 1rem;
-          padding: 0.75rem 1rem;
-          background: rgba(255,255,255,0.04);
-          border-radius: var(--radius-lg);
-          border: 1px solid var(--border);
+        .nav-link.store-link:hover {
+          background: var(--accent-faint);
+          color: var(--text-muted);
+          border-color: var(--accent);
         }
-        .user-badge-name { font-weight: 600; font-size: 0.9rem; }
-        .user-badge-email { font-size: 0.78rem; color: var(--text-faint); margin-top: 2px; }
+        .nav-spacer { flex: 1; }
         .hamburger {
           display: none;
           position: fixed;
@@ -125,6 +102,7 @@ export default function Sidebar() {
           justify-content: center;
           flex-direction: column;
           gap: 4px;
+          cursor: pointer;
         }
         .hamburger span {
           display: block;
@@ -165,34 +143,33 @@ export default function Sidebar() {
 
       <aside className={`sidebar${open ? ' open' : ''}`}>
         <Link href="/" className="brand" onClick={() => setOpen(false)}>
-          <div className="brand-logo">W</div>
-          <span className="brand-title">Website Hero</span>
+          <div className="brand-logo">裕</div>
+          <div>
+            <div className="brand-title">Yue Woh Hop Kee</div>
+            <div className="brand-sub">裕和合記臘味</div>
+          </div>
         </Link>
 
         <nav className="nav">
-          {links.map(l => (
+          {navLinks.slice(0, 3).map(l => (
             <Link
               key={l.href}
               href={l.href}
-              className={`nav-link${pathname === l.href ? ' active' : ''}${l.href === '/delete-account' ? ' danger' : ''}`}
+              className={`nav-link${pathname === l.href ? ' active' : ''}`}
               onClick={() => setOpen(false)}
             >
               {l.label}
             </Link>
           ))}
-          {user && (
-            <button className="logout-btn" onClick={() => { setOpen(false); handleLogout(); }}>
-              Log out
-            </button>
-          )}
+          <div className="nav-spacer" />
+          <Link
+            href="/shopping"
+            className={`nav-link store-link${pathname === '/shopping' ? ' active' : ''}`}
+            onClick={() => setOpen(false)}
+          >
+            🛒 E-Store
+          </Link>
         </nav>
-
-        {user && (
-          <div className="user-badge">
-            <div className="user-badge-name">{user.name}</div>
-            <div className="user-badge-email">{user.email}</div>
-          </div>
-        )}
       </aside>
     </>
   )
