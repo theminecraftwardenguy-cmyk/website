@@ -6,8 +6,8 @@ import { usePathname } from 'next/navigation'
 const navLinks = [
   { href: '/', label: 'Home' },
   { href: '/story', label: 'Our Story' },
+  { href: '/blog', label: 'Blog' },
   { href: '/contact', label: 'Contact' },
-  { href: '/shopping', label: 'E-Store' },
 ]
 
 export default function Sidebar() {
@@ -36,7 +36,9 @@ export default function Sidebar() {
           gap: 0.75rem;
           margin-bottom: 2rem;
           text-decoration: none;
+          transition: opacity 160ms cubic-bezier(0.16,1,0.3,1);
         }
+        .brand:hover { opacity: 0.8; }
         .brand-logo {
           width: 42px;
           height: 42px;
@@ -66,13 +68,19 @@ export default function Sidebar() {
           padding: 0.75rem 1rem;
           border-radius: var(--radius-xl);
           color: var(--text-muted);
-          transition: background var(--transition), color var(--transition);
+          transition: background var(--transition), color var(--transition), transform var(--transition);
           font-size: 0.95rem;
           text-decoration: none;
         }
-        .nav-link:hover, .nav-link.active {
+        .nav-link:hover {
           background: var(--accent-faint);
           color: var(--text);
+          transform: translateX(3px);
+        }
+        .nav-link.active {
+          background: var(--accent-faint);
+          color: var(--text);
+          font-weight: 600;
         }
         .nav-link.store-link {
           margin-top: auto;
@@ -84,6 +92,7 @@ export default function Sidebar() {
           background: var(--accent-faint);
           color: var(--text-muted);
           border-color: var(--accent);
+          transform: translateX(3px);
         }
         .nav-spacer { flex: 1; }
         .hamburger {
@@ -151,7 +160,7 @@ export default function Sidebar() {
         </Link>
 
         <nav className="nav">
-          {navLinks.slice(0, 3).map(l => (
+          {navLinks.map(l => (
             <Link
               key={l.href}
               href={l.href}
