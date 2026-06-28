@@ -19,8 +19,8 @@ A production-ready Next.js starter with MongoDB Atlas authentication, deployed o
 
 ```bash
 npm install
-cp .env.local.example .env.local
-# Fill in MONGODB_URI in .env.local
+cp ..env.local.example ..env.local
+# Fill in MONGODB_URI in ..env.local
 npm run dev
 ```
 
