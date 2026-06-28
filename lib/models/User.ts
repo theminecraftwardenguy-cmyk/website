@@ -8,11 +8,15 @@ export interface IUser extends Document {
 }
 
 const UserSchema = new Schema<IUser>({
-  username: { type: String, required: true, unique: true, trim: true, minlength: 3, maxlength: 30 },
-  email:    { type: String, required: true, unique: true, lowercase: true, trim: true },
+  username:     { type: String, required: true, unique: true, trim: true, minlength: 3, maxlength: 30 },
+  email:        { type: String, required: true, unique: true, lowercase: true, trim: true },
+  // IMPORTANT: do NOT set select:false — we need this field in login/delete
   passwordHash: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now },
+  createdAt:    { type: Date, default: Date.now },
 });
 
-const User: Model<IUser> = mongoose.models.User || mongoose.model<IUser>('User', UserSchema);
+// Clear cached model on hot-reload in dev so schema changes apply immediately
+if (mongoose.models.User) delete mongoose.models.User;
+
+const User: Model<IUser> = mongoose.model<IUser>('User', UserSchema);
 export default User;

@@ -8,17 +8,24 @@ import { getSession } from '@/lib/auth';
 export async function DELETE(req: NextRequest) {
   try {
     const session = await getSession();
-    if (!session) return NextResponse.json({ error: 'Not logged in' }, { status: 401 });
+    if (!session)
+      return NextResponse.json({ error: 'Not logged in' }, { status: 401 });
 
     const { password } = await req.json();
-    if (!password) return NextResponse.json({ error: 'Password required to delete account' }, { status: 400 });
+    if (!password)
+      return NextResponse.json({ error: 'Password required to delete account' }, { status: 400 });
 
     await dbConnect;
-    const user = await User.findById(session.userId);
-    if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    const user = await User.findById(session.userId).select('+passwordHash');
+    if (!user)
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
 
-    const ok = await bcrypt.compare(password, user.passwordHash);
-    if (!ok) return NextResponse.json({ error: 'Wrong password' }, { status: 401 });
+    if (!user.passwordHash)
+      return NextResponse.json({ error: 'Account data corrupted' }, { status: 500 });
+
+    const ok = await bcrypt.compare(String(password), String(user.passwordHash));
+    if (!ok)
+      return NextResponse.json({ error: 'Wrong password' }, { status: 401 });
 
     await Post.deleteMany({ authorId: user._id });
     await User.findByIdAndDelete(user._id);
@@ -27,6 +34,7 @@ export async function DELETE(req: NextRequest) {
     res.cookies.set('auth_token', '', { maxAge: 0, path: '/' });
     return res;
   } catch (e: any) {
+    console.error('[DELETE ACCOUNT ERROR]', e);
     return NextResponse.json({ error: e.message }, { status: 500 });
   }
 }

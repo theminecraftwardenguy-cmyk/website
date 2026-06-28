@@ -17,14 +17,21 @@ export async function POST(req: NextRequest) {
     if (exists)
       return NextResponse.json({ error: 'Username or email already taken' }, { status: 409 });
 
-    const passwordHash = await bcrypt.hash(password, 12);
-    const user = await User.create({ username, email, passwordHash });
-    const token = await signToken({ userId: user._id.toString(), username: user.username });
+    const passwordHash = await bcrypt.hash(String(password), 12);
+    const user = await User.create({ username: username.trim(), email: email.trim().toLowerCase(), passwordHash });
 
+    const token = await signToken({ userId: user._id.toString(), username: user.username });
     const res = NextResponse.json({ ok: true, username: user.username });
-    res.cookies.set('auth_token', token, { httpOnly: true, secure: true, sameSite: 'lax', maxAge: 60 * 60 * 24 * 7, path: '/' });
+    res.cookies.set('auth_token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24 * 7,
+      path: '/',
+    });
     return res;
   } catch (e: any) {
+    console.error('[REGISTER ERROR]', e);
     return NextResponse.json({ error: e.message }, { status: 500 });
   }
 }
