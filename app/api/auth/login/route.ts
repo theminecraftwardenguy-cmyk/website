@@ -1,18 +1,26 @@
 import { NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
-
-declare global { var __users: Map<string, {id:string;name:string;email:string;hash:string}> }
-if (!global.__users) global.__users = new Map()
+import { findUser } from '@/lib/users'
 
 export async function POST(req: Request) {
-  const { email, password } = await req.json()
-  if (!email || !password) return NextResponse.json({ error: 'Missing fields' }, { status: 400 })
+  try {
+    const { email, password } = await req.json()
 
-  const user = global.__users.get(email.toLowerCase())
-  if (!user) return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 })
+    if (!email || !password)
+      return NextResponse.json({ error: 'Email and password are required' }, { status: 400 })
 
-  const ok = await bcrypt.compare(password, user.hash)
-  if (!ok) return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 })
+    const user = findUser(email)
+    if (!user)
+      return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 })
 
-  return NextResponse.json({ user: { name: user.name, email: user.email } })
+    const ok = await bcrypt.compare(password, user.hash)
+    if (!ok)
+      return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 })
+
+    return NextResponse.json({
+      user: { name: user.name, email: user.email, createdAt: user.createdAt },
+    })
+  } catch {
+    return NextResponse.json({ error: 'Server error — please try again' }, { status: 500 })
+  }
 }
