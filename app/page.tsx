@@ -205,7 +205,7 @@ export default function Home() {
         <div className="cat-manager-card">
           <div className="cat-manager-photo">
             <Image
-              src="/cat-manager.jpg"
+              src="/cat-manager.png"
               alt="The shop cat, our esteemed Cat Manager"
               fill
               style={{ objectFit: 'cover', objectPosition: 'center top' }}
